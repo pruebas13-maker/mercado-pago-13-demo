@@ -1473,9 +1473,9 @@ async function activarNotificaciones(){
 
     alert("Firebase conectado correctamente");
   } catch(error) {
-    console.error("Error de Firebase:", error);
+  alert("Error de Firebase: " + error.message);
+  console.error(error);
   }
-}
 
 activarNotificaciones();
 </script>
