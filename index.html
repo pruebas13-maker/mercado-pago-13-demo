@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercado Pago 13</title>
+
+<style>
+  .pin-screen{
+position:fixed;
+inset:0;
+background:#f8f9fc;
+z-index:500;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:70px;
+text-align:center
+}
+
+.pin-logo{
+width:70px;
+height:70px;
+border-radius:20px;
+background:white;
+box-shadow:0 5px 18px rgba(0,0,0,.1);
+padding:5px;
+margin-bottom:18px
+}
+
+.pin-logo img{
+width:100%;
+height:100%;
+object-fit:contain;
+border-radius:16px
+}
+
+.pin-screen h1{
+font-size:23px;
+color:#222
+}
+
+.pin-screen p{
+font-size:14px;
+color:#777;
+margin-top:7px
+}
+
+.pin-dots{
+display:flex;
+gap:12px;
+margin:25px 0
+}
+
+.pin-dots span{
+width:13px;
+height:13px;
+border-radius:50%;
+border:2px solid #6c35ff
+}
+
+.pin-dots span.filled{
+background:#6c35ff
+}
+
+.pin-keypad{
+width:270px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:13px
+}
+
+.pin-keypad button{
+height:58px;
+border:0;
+border-radius:18px;
+background:white;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+font-size:20px;
+color:#333
+}
+
+.pin-keypad button:active{
+transform:scale(.93);
+background:#eee9ff
+}
+
+.pin-keypad .empty{
+background:transparent;
+box-shadow:none
+}
+
+
+  .page{
+animation:pageIn .25s ease
+}
+
+@keyframes pageIn{
+from{
+opacity:0;
+transform:translateY(8px)
+}
+to{
+opacity:1;
+transform:translateY(0)
+}
+}
+
+.menu button{
+transition:.15s
+}
+
+.menu button:active{
+background:#f1edff;
+transform:scale(.99)
+}
+
+.primary:active,
+.secondary:active{
+transform:scale(.98)
+}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif
+}
+.card-button{
+margin-top:14px;
+}
+body{
+background:#f1f2f5;
+color:#222
+}
+
+.app{
+width:100%;
+max-width:430px;
+min-height:100vh;
+margin:auto;
+background:#f8f9fc;
+padding-bottom:80px
+}
+
+.demo{
+background:#fff2a8;
+color:#665900;
+text-align:center;
+padding:7px;
+font-size:10px;
+font-weight:bold
+}
+
+.header{
+background:linear-gradient(135deg,#6c35ff,#5120d5);
+color:white;
+padding:22px 20px 28px;
+border-radius:0 0 26px 26px
+}
+
+.header-top{
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.logo{
+width:42px;
+height:42px;
+border-radius:13px;
+background:white;
+color:#6c35ff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold
+}
+
+.header h1{
+font-size:24px
+}
+
+.header p{
+font-size:13px;
+opacity:.85;
+margin-top:4px
+}
+
+.bell{
+width:40px;
+height:40px;
+border:0;
+border-radius:50%;
+background:rgba(255,255,255,.18);
+color:white;
+font-size:18px
+}
+
+.content{
+padding:18px
+}
+
+.page{
+display:none
+}
+
+.page.active{
+display:block
+}
+
+.balance-card{
+background:white;
+border-radius:22px;
+padding:20px;
+box-shadow:0 5px 20px rgba(0,0,0,.08)
+}
+
+.balance-top{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.balance-title{
+color:#777;
+font-size:13px
+}
+
+.eye{
+border:0;
+background:#eee9ff;
+color:#6c35ff;
+width:35px;
+height:35px;
+border-radius:50%
+}
+
+.balance{
+font-size:36px;
+font-weight:bold;
+margin:8px 0 5px
+}
+
+.balance-sub{
+color:#888;
+font-size:12px
+}
+
+.buttons{
+display:flex;
+gap:8px;
+margin-top:18px
+}
+
+.action{
+flex:1;
+border:0;
+background:#fff;
+color:#5c27dc;
+padding:15px 5px;
+border-radius:16px;
+font-weight:bold;
+font-size:12px;
+box-shadow:0 3px 10px rgba(108,53,255,.12);
+transition:.15s;
+}
+
+.action:active{
+transform:scale(.94);
+background:#eee9ff;
+}
+
+.action:active{
+transform:scale(.96)
+}
+
+.title{
+font-size:20px;
+font-weight:bold;
+margin:24px 0 12px
+}
+
+.menu{
+background:white;
+border-radius:19px;
+overflow:hidden;
+box-shadow:0 3px 12px rgba(0,0,0,.05)
+}
+
+.menu button{
+width:100%;
+border:0;
+border-bottom:1px solid #eee;
+background:white;
+text-align:left;
+padding:18px;
+font-size:15px
+}
+
+.menu button:last-child{
+border-bottom:0
+}
+
+.movement{
+padding:16px;
+border-bottom:1px solid #f0f0f0;
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:#fff
+}
+
+.movement:last-child{
+border-bottom:0
+}
+
+.movement-left{
+display:flex;
+align-items:center;
+gap:12px
+}
+
+.movement-icon{
+width:44px;
+height:44px;
+border-radius:14px;
+background:#eee9ff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:19px
+}
+
+.movement b{
+display:block;
+font-size:14px;
+margin-bottom:4px
+}
+
+.movement span{
+display:block;
+font-size:11px;
+color:#999
+}
+
+.positive{
+color:#16a05a;
+font-weight:bold;
+font-size:14px
+}
+
+.negative{
+color:#e53935;
+font-weight:bold;
+font-size:14px
+}
+
+.virtual-card{
+height:225px;
+border-radius:24px;
+padding:22px;
+background:linear-gradient(135deg,#171717 0%,#292929 55%,#444 100%);
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+box-shadow:0 12px 28px rgba(0,0,0,.22);
+position:relative;
+overflow:hidden
+}
+
+.virtual-card:before{
+content:"";
+position:absolute;
+width:180px;
+height:180px;
+border-radius:50%;
+right:-70px;
+top:-70px;
+background:rgba(255,255,255,.08)
+}
+
+.card-brand{
+font-size:18px;
+font-weight:bold;
+position:relative
+}
+
+.card-demo{
+font-size:9px;
+opacity:.6;
+margin-top:4px;
+letter-spacing:1px;
+position:relative
+}
+
+.chip{
+width:45px;
+height:32px;
+border-radius:7px;
+background:linear-gradient(135deg,#ddd,#999);
+margin-top:14px;
+position:relative
+}
+
+.card-number{
+font-size:19px;
+letter-spacing:2px;
+position:relative
+}
+
+<div class="card-bottom">
+<div>
+<span>TITULAR</span><br>
+<b>EVER IESHUA PEREZ</b>
+</div>
+
+<div>
+<span>VENCE</span><br>
+<b>12/30</b>
+</div>
+
+<div>
+<span>CVV</span><br>
+<b>•••</b>
+</div>
+</div>
+.profile{
+text-align:center;
+padding:15px 0 25px
+}
+
+.avatar{
+width:82px;
+height:82px;
+border-radius:50%;
+background:#6c35ff;
+color:white;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:29px;
+font-weight:bold
+}
+
+.profile h2{
+margin-top:12px
+}
+
+.profile p{
+color:#777;
+margin-top:5px
+}
+
+.form-card{
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 4px 16px rgba(0,0,0,.07)
+}
+
+.form-card h2{
+margin-bottom:18px
+}
+
+.input{
+width:100%;
+padding:15px;
+border:1px solid #ddd;
+border-radius:12px;
+margin-bottom:12px;
+font-size:16px;
+outline:none
+}
+
+.input:focus{
+border-color:#6c35ff
+}
+
+.primary{
+width:100%;
+border:0;
+padding:15px;
+border-radius:12px;
+background:#6c35ff;
+color:white;
+font-weight:bold;
+font-size:15px
+}
+
+.secondary{
+width:100%;
+border:0;
+padding:14px;
+border-radius:12px;
+background:#eee9ff;
+color:#5c27dc;
+font-weight:bold;
+margin-top:10px
+}
+
+.back{
+border:0;
+background:transparent;
+color:#6c35ff;
+font-size:15px;
+padding:5px 0 15px
+}
+
+.info-box{
+background:#f1edff;
+border-radius:17px;
+padding:18px
+}
+
+.label{
+color:#777;
+font-size:12px;
+margin-top:12px
+}
+
+.value{
+font-size:17px;
+font-weight:bold;
+margin-top:5px
+}
+
+.share{
+width:100%;
+border:0;
+padding:14px;
+border-radius:12px;
+background:#6c35ff;
+color:white;
+font-weight:bold;
+margin-top:15px
+}
+
+.comprobante{
+background:white;
+border-radius:20px;
+padding:22px;
+text-align:center;
+box-shadow:0 4px 16px rgba(0,0,0,.07)
+}
+
+.amount{
+font-size:37px;
+font-weight:bold;
+margin:18px 0
+}
+
+.detail{
+text-align:left;
+border-top:1px solid #eee;
+padding:14px 0
+}
+
+.demo-label{
+margin-top:15px;
+padding:10px;
+border-radius:10px;
+background:#fff2a8;
+color:#665900;
+font-size:11px;
+font-weight:bold
+}
+
+.toast{
+position:fixed;
+bottom:88px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+max-width:390px;
+background:#222;
+color:white;
+padding:14px;
+border-radius:13px;
+text-align:center;
+font-size:13px;
+display:none;
+z-index:999
+}
+
+.toast.show{
+display:block
+}
+
+.bottom{
+position:fixed;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+width:100%;
+max-width:430px;
+height:72px;
+background:white;
+border-top:1px solid #ddd;
+display:flex;
+z-index:100
+}
+
+.bottom button{
+flex:1;
+border:0;
+background:white;
+color:#777;
+font-size:11px
+}
+
+.bottom button.active{
+color:#6c35ff;
+font-weight:bold
+}
+
+.bottom-icon{
+font-size:20px;
+margin-bottom:3px
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <div id="pinScreen" class="pin-screen">
+
+<div class="pin-logo">
+<img src="logo.png" alt="Logo">
+</div>
+
+<h1>Mercado Pago 13</h1>
+<p>Ingresa tu PIN de demostración</p>
+
+<div id="pinDots" class="pin-dots">
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<div class="pin-keypad">
+
+<button onclick="enterPin('1')">1</button>
+<button onclick="enterPin('2')">2</button>
+<button onclick="enterPin('3')">3</button>
+
+<button onclick="enterPin('4')">4</button>
+<button onclick="enterPin('5')">5</button>
+<button onclick="enterPin('6')">6</button>
+
+<button onclick="enterPin('7')">7</button>
+<button onclick="enterPin('8')">8</button>
+<button onclick="enterPin('9')">9</button>
+
+<button class="empty"></button>
+<button onclick="enterPin('0')">0</button>
+<button onclick="deletePin()">⌫</button>
+
+</div>
+
+<div class="demo-pin"></div>
+
+  </div>
+  
+
+<div class="demo">
+⚠ DEMO · SIMULACIÓN · SIN OPERACIONES REALES
+</div>
+
+<div id="home" class="page active">
+
+<div class="header">
+<div class="header-top">
+
+<div class="logo-area">
+<div class="logo img">MP</div>
+<div>
+<h1>Hola, Ever</h1>
+<p>Mercado Pago </p>
+</div>
+</div>
+
+<button class="bell" onclick="showToast('No tienes nuevas notificaciones')">🔔</button>
+
+</div>
+</div>
+
+<div class="content">
+
+<div class="balance-card">
+
+<div class="balance-top">
+<div class="balance-title">Saldo disponible</div>
+<button class="eye" onclick="toggleBalance()">👁</button>
+</div>
+
+<div class="balance" id="balanceHome">$0.48 MXN</div>
+
+<div class="balance-sub">Saldo de demostración</div>
+
+<div class="buttons">
+<button class="action" onclick="showPage('deposit')">＋ Ingresar</button>
+<button class="action" onclick="showPage('transfer')">↗ Transferir</button>
+<button class="action" onclick="showPage('withdraw')">↓ Retirar</button>
+</div>
+
+</div>
+
+<div class="title">Tu cuenta</div>
+
+<div class="menu">
+
+<button onclick="showPage('profile')">👤 Información de tu perfil</button>
+<button onclick="showPage('security')">🔐 Seguridad</button>
+<button onclick="showPage('cards')">💳 Tarjetas</button>
+<button onclick="showPage('receiving')">💰 Datos para recibir dinero</button>
+
+</div>
+
+<div class="title">Actividad reciente</div>
+
+<div class="menu" id="homeMovements">
+
+<div class="movement">
+
+<div class="movement-left">
+<div class="movement-icon">💰</div>
+<div>
+<b>Saldo inicial</b>
+<span>Cuenta demo</span>
+</div>
+</div>
+
+<div class="positive">+$0.48</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div id="money" class="page">
+
+<div class="header">
+<h1>Tu dinero</h1>
+<p>Administra tu saldo</p>
+</div>
+
+<div class="content">
+
+<div class="balance-card">
+
+<div class="balance-title">Dinero disponible</div>
+
+<div class="balance" id="balanceMoney">$0.48 MXN</div>
+
+<div class="balance-sub">Saldo de demostración</div>
+
+<div class="buttons">
+<button class="action" onclick="showPage('deposit')">＋ Ingresar</button>
+<button class="action" onclick="showPage('transfer')">↗ Transferir</button>
+<button class="action" onclick="showPage('withdraw')">↓ Retirar</button>
+</div>
+
+</div>
+
+<div class="title">Movimientos</div>
+
+<div class="menu" id="movements">
+
+<div class="movement">
+
+<div class="movement-left">
+<div class="movement-icon">💰</div>
+<div>
+<b>Saldo inicial</b>
+<span>Cuenta demo</span>
+</div>
+</div>
+
+<div class="positive">+$0.48</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div id="deposit" class="page">
+
+<div class="header">
+<h1>Ingresar dinero</h1>
+<p>Simulación de depósito</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="form-card">
+
+<h2>¿Cuánto quieres ingresar?</h2>
+
+<input id="depositAmount" class="input" type="number" placeholder="Ej. 500" min="1">
+
+<button class="primary" onclick="depositMoney()">Ingresar dinero</button>
+
+<button class="secondary" onclick="showPage('home')">Cancelar</button>
+
+</div>
+</div>
+</div>
+
+
+<div id="transfer" class="page">
+
+<div class="header">
+<h1>Transferir</h1>
+<p>Transferencia de demostración</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="form-card">
+
+<h2>¿A quién quieres transferir?</h2>
+
+<input id="recipient" class="input" type="text" placeholder="Nombre del destinatario">
+
+<input id="transferAmount" class="input" type="number" placeholder="Monto" min="1">
+
+<input id="concept" class="input" type="text" placeholder="Concepto">
+
+<button class="primary" onclick="transferMoney()">Continuar</button>
+
+<button class="secondary" onclick="showPage('home')">Cancelar</button>
+
+</div>
+</div>
+</div>
+
+
+<div id="withdraw" class="page">
+
+<div class="header">
+<h1>Retirar dinero</h1>
+<p>Simulación de retiro</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="form-card">
+
+<h2>¿Cuánto quieres retirar?</h2>
+
+<input id="withdrawAmount" class="input" type="number" placeholder="Ej. 100" min="1">
+
+<button class="primary" onclick="withdrawMoney()">Retirar dinero</button>
+
+<button class="secondary" onclick="showPage('home')">Cancelar</button>
+
+</div>
+</div>
+</div>
+
+
+<div id="cards" class="page">
+
+<div class="header">
+<h1>Tarjetas</h1>
+<p>Tu tarjeta virtual</p>
+</div>
+
+<div class="content">
+
+<div class="virtual-card">
+
+<div>
+<div class="card-brand">Mercado Pago 13</div>
+<div class="card-demo">TARJETA VIRTUAL · DEMO</div>
+<div class="chip"></div>
+</div>
+
+<div class="card-number">•••• •••• •••• 1234</div>
+
+<div class="card-bottom">
+<span>EVER IESHUA PEREZ</span>
+<span>DEMO</span>
+</div>
+
+</div>
+<button class="primary card-button" onclick="toggleCardData()" id="cardButton">
+👁 Ver datos de tarjeta
+</button>
+<div class="title">Opciones</div>
+
+<div class="menu">
+<button>💳 Tarjeta virtual</button>
+<button>⚙️ Configuración</button>
+<button onclick="showToast('Función disponible únicamente en la demo')">🔒 Bloquear tarjeta</button>
+</div>
+
+</div>
+</div>
+
+
+<div id="more" class="page">
+
+<div class="header">
+<h1>Más</h1>
+<p>Explora las opciones</p>
+</div>
+
+<div class="content">
+
+<div class="menu">
+
+<button>🎁 Invita y gana</button>
+<button onclick="showPage('money')">💰 Tu dinero</button>
+<button>📱 Pagar sin contacto</button>
+<button>💳 Créditos</button>
+<button>🌎 Transferencia entre países</button>
+<button>📁 Apartados</button>
+<button>₿ Criptomonedas</button>
+<button>📊 Reportes</button>
+<button>🛡️ Seguros y garantías</button>
+<button onclick="showPage('receipt')">📄 Comprobante de demo</button>
+
+</div>
+</div>
+</div>
+
+
+<div id="profile" class="page">
+
+<div class="header">
+<h1>Mi cuenta</h1>
+<p>Información de tu perfil</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="profile">
+
+<div class="avatar">E</div>
+
+<h2>Ever Ieshua Perez</h2>
+<p>correo@demo.com</p>
+
+</div>
+
+<div class="menu">
+<button>Información personal</button>
+<button>Correo electrónico</button>
+<button>Teléfono</button>
+<button>Datos de seguridad</button>
+</div>
+
+</div>
+</div>
+
+
+<div id="security" class="page">
+
+<div class="header">
+<h1>Seguridad</h1>
+<p>Protege tu cuenta</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="menu">
+<button>🔑 Llave de acceso</button>
+<button>🔒 Contraseña</button>
+<button>📱 Dispositivos</button>
+<button>🛡️ Actividad de la cuenta</button>
+</div>
+
+</div>
+</div>
+
+
+<div id="receiving" class="page">
+
+<div class="header">
+<h1>Datos para recibir dinero</h1>
+<p>Información de demostración</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="info-box">
+
+<div class="label">CLABE DEMO</div>
+<div class="value">000000000000000000</div>
+
+<div class="label">Beneficiario</div>
+<div class="value">Usuario Demo</div>
+
+<div class="label">Institución</div>
+<div class="value">Billetera Demo</div>
+
+<button class="share" onclick="showToast('Datos copiados — simulación')">
+Compartir datos
+</button>
+
+</div>
+
+<div class="menu">
+<button>Dimo — DEMO</button>
+</div>
+
+</div>
+</div>
+<div id="confirmTransfer" class="page">
+
+<div class="header">
+<h1>Confirmar transferencia</h1>
+<p>Revisa los datos antes de continuar</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('transfer')">← Volver</button>
+
+<div class="form-card">
+
+<div style="text-align:center;margin-bottom:20px">
+<div class="avatar">↗</div>
+<h2 id="confirmRecipient">Destinatario</h2>
+<p style="color:#777">Transferencia de demostración</p>
+</div>
+
+<div class="info-box">
+
+<div class="label">Monto</div>
+<div class="value" id="confirmAmount">$0.00 MXN</div>
+
+<div class="label">Concepto</div>
+<div class="value" id="confirmConcept">Sin concepto</div>
+
+<div class="label">Comisión</div>
+<div class="value">$0.00 MXN</div>
+
+<div class="label">Total</div>
+<div class="value" id="confirmTotal">$0.00 MXN</div>
+
+</div>
+
+<button class="primary" style="margin-top:15px" onclick="confirmTransfer()">
+Confirmar transferencia
+</button>
+
+<button class="secondary" onclick="showPage('transfer')">
+Modificar datos
+</button>
+
+</div>
+</div>
+</div>
+
+<div id="receipt" class="page">
+
+<div class="header">
+<h1>Comprobante</h1>
+<p>Operación simulada</p>
+</div>
+
+<div class="content">
+
+<button class="back" onclick="showPage('home')">← Volver</button>
+
+<div class="comprobante">
+
+<div>MERCADO PAGO 13</div>
+
+<div class="amount" id="receiptAmount">$1,930.00 MXN</div>
+
+<div class="detail">
+<b>Origen</b><br>
+Usuario Demo
+</div>
+
+<div class="detail">
+<b>Destino</b><br>
+<span id="receiptRecipient">Destinatario Demo</span>
+</div>
+
+<div class="detail">
+<b>Referencia</b><br>
+<span id="receiptReference">DEMO-0001930</span>
+</div>
+
+<div class="demo-label">
+⚠ ESTE COMPROBANTE ES FICTICIO Y NO REPRESENTA UNA OPERACIÓN REAL
+</div>
+
+</div>
+</div>
+</div>
+
+
+<div class="bottom">
+
+<button id="navHome" class="active" onclick="navigate('home')">
+<div class="bottom-icon">🏠</div>
+Cuenta
+</button>
+
+<button id="navMoney" onclick="navigate('money')">
+<div class="bottom-icon">💰</div>
+Dinero
+</button>
+
+<button id="navCards" onclick="navigate('cards')">
+<div class="bottom-icon">💳</div>
+Tarjetas
+</button>
+
+<button id="navMore" onclick="navigate('more')">
+<div class="bottom-icon">☰</div>
+Más
+</button>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+
+let balance=0.48;
+let balanceVisible=true;
+
+function money(value){
+return "$"+value.toLocaleString("es-MX",{minimumFractionDigits:2,maximumFractionDigits:2})+" MXN";
+}
+
+function showPage(page){
+
+let pages=document.getElementsByClassName("page");
+
+for(let i=0;i<pages.length;i++){
+pages[i].style.display="none";
+}
+
+let selected=document.getElementById(page);
+
+if(selected){
+selected.style.display="block";
+}
+
+window.scrollTo(0,0);
+}
+
+function navigate(page){
+
+showPage(page);
+
+document.querySelectorAll(".bottom button").forEach(function(button){
+button.classList.remove("active");
+});
+
+if(page==="home"){
+document.getElementById("navHome").classList.add("active");
+}
+
+if(page==="money"){
+document.getElementById("navMoney").classList.add("active");
+}
+
+if(page==="cards"){
+document.getElementById("navCards").classList.add("active");
+}
+
+if(page==="more"){
+document.getElementById("navMore").classList.add("active");
+}
+
+}function toggleCardData(){
+
+let number=document.querySelector(".card-number");
+let button=document.getElementById("cardButton");
+
+if(number.innerText==="•••• •••• •••• 1234"){
+
+number.innerText="5482 7619 4321 1234";
+button.innerText="🙈 Ocultar datos";
+
+showToast("Datos ficticios mostrados");
+
+}else{
+
+number.innerText="•••• •••• •••• 1234";
+button.innerText="👁 Ver datos de tarjeta";
+
+}
+
+  }
+let pin="";
+
+function enterPin(number){
+
+if(pin.length>=4)return;
+
+pin+=number;
+
+updatePinDots();
+
+if(pin.length===4){
+
+if(pin==="1234"){
+
+showToast("Acceso de demostración");
+
+setTimeout(function(){
+
+document.getElementById("pinScreen").style.display="none";
+
+},500);
+
+}else{
+
+showToast("PIN incorrecto");
+
+pin="";
+
+setTimeout(updatePinDots,300);
+
+}
+
+}
+
+}
+
+function deletePin(){
+
+pin=pin.slice(0,-1);
+
+updatePinDots();
+
+}
+
+function updatePinDots(){
+
+let dots=document.querySelectorAll("#pinDots span");
+
+dots.forEach(function(dot,index){
+
+if(index<pin.length){
+dot.classList.add("filled");
+}else{
+dot.classList.remove("filled");
+}
+
+});
+
+  }
+function updateBalance(){
