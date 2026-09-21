@@ -1458,40 +1458,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-async function activarNotificaciones() {
+async function activarNotificaciones(){
   try {
-
-    alert("1. Iniciando Firebase...");
-
-    const registro = await navigator.serviceWorker.register(
-      "./firebase-messaging-sw.js"
-    );
-
-    alert("2. Service Worker registrado");
 
     const permiso = await Notification.requestPermission();
 
     if (permiso !== "granted") {
-      alert("Permiso de notificaciones: " + permiso);
+      console.log("Permiso no concedido");
       return;
     }
 
-    alert("3. Permiso concedido");
-
     const token = await getToken(messaging, {
-      vapidKey: "BHtcqTIH0RoucbTOmfXF8JHTXkEXK_jZq7AyCdzIH9tMGOgMytEislUXN_PN6_baAv1nMQL7XYiQwurVCO5JCAk",
-      serviceWorkerRegistration: registro
+      vapidKey: "BHtcqTIH0RoucbTOmfXF8JHTXkEXK_jZq7AyCdzIH9tMGOgMytEislUXN_PN6_baAv1nMQL7XYiQwurVCO5JCAk"
     });
-
-    alert("4. Firebase conectado correctamente");
 
     console.log("FCM Token:", token);
 
   } catch(error) {
-
-    alert("ERROR: " + error.message);
-    console.error(error);
-
+    console.error("Error de Firebase:", error);
   }
 }
 
