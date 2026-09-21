@@ -415,26 +415,7 @@ letter-spacing:2px;
 position:relative
 }
 
-<div class="card-bottom">
-<div>
-<span>TITULAR</span><br>
-<b>EVER IESHUA PEREZ</b>
-</div>
 
-<div>
-<span>VENCE</span><br>
-<b>12/30</b>
-</div>
-
-<div>
-<span>CVV</span><br>
-<b>•••</b>
-</div>
-</div>
-.profile{
-text-align:center;
-padding:15px 0 25px
-}
 
 .avatar{
 width:82px;
@@ -1279,3 +1260,187 @@ dot.classList.remove("filled");
 
   }
 function updateBalance(){
+
+let home=document.getElementById("balanceHome");
+let moneyPage=document.getElementById("balanceMoney");
+
+if(balanceVisible){
+home.innerText=money(balance);
+moneyPage.innerText=money(balance);
+}else{
+home.innerText="••••••";
+moneyPage.innerText="••••••";
+}
+
+}
+
+function toggleBalance(){
+
+balanceVisible=!balanceVisible;
+updateBalance();
+
+}
+
+function showToast(message){
+
+let toast=document.getElementById("toast");
+
+toast.innerText=message;
+toast.classList.add("show");
+
+setTimeout(function(){
+toast.classList.remove("show");
+},2500);
+
+}
+
+function addMovement(title,amount,icon){
+
+let containers=[
+document.getElementById("movements"),
+document.getElementById("homeMovements")
+];
+
+containers.forEach(function(container){
+
+let movement=document.createElement("div");
+
+movement.className="movement";
+
+let positive=amount>=0;
+
+movement.innerHTML=
+'<div class="movement-left">'+
+'<div class="movement-icon">'+icon+'</div>'+
+'<div>'+
+'<b>'+title+'</b>'+
+'<span>Hoy · '+new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"})+' · DEMO</span>'+
+'</div>'+
+'</div>'+
+'<div class="'+(positive?"positive":"negative")+'">'+
+(positive?"+":"-")+money(Math.abs(amount))+
+'</div>';
+
+container.insertBefore(movement,container.firstChild);
+
+});
+
+}
+
+function depositMoney(){
+
+let input=document.getElementById("depositAmount");
+let amount=parseFloat(input.value);
+
+if(isNaN(amount)||amount<=0){
+showToast("Ingresa una cantidad válida");
+return;
+}
+
+balance+=amount;
+
+updateBalance();
+
+addMovement("Ingreso de dinero",amount,"＋");
+
+input.value="";
+
+showToast("Ingreso simulado: "+money(amount));
+
+navigate("money");
+
+}
+
+function transferMoney(){
+
+let recipient=document.getElementById("recipient").value.trim();
+let amount=parseFloat(document.getElementById("transferAmount").value);
+let concept=document.getElementById("concept").value.trim();
+
+if(recipient===""){
+showToast("Escribe el destinatario");
+return;
+}
+
+if(isNaN(amount)||amount<=0){
+showToast("Ingresa un monto válido");
+return;
+}
+
+if(amount>balance){
+showToast("Saldo insuficiente en la simulación");
+return;
+}
+
+document.getElementById("confirmRecipient").innerText=recipient;
+document.getElementById("confirmAmount").innerText=money(amount);
+document.getElementById("confirmTotal").innerText=money(amount);
+document.getElementById("confirmConcept").innerText=concept||"Sin concepto";
+
+showPage("confirmTransfer");
+
+  }
+  function confirmTransfer(){
+
+let recipient=document.getElementById("recipient").value.trim();
+let amount=parseFloat(document.getElementById("transferAmount").value);
+
+balance-=amount;
+
+updateBalance();
+
+addMovement("Transferencia a "+recipient,-amount,"↗");
+
+let reference="DEMO-"+Math.floor(100000+Math.random()*900000);
+
+document.getElementById("receiptAmount").innerText=money(amount);
+document.getElementById("receiptRecipient").innerText=recipient;
+document.getElementById("receiptReference").innerText=reference;
+
+document.getElementById("recipient").value="";
+document.getElementById("transferAmount").value="";
+document.getElementById("concept").value="";
+
+showPage("receipt");
+
+showToast("Transferencia simulada");
+
+  }
+
+function withdrawMoney(){
+
+let input=document.getElementById("withdrawAmount");
+let amount=parseFloat(input.value);
+
+if(isNaN(amount)||amount<=0){
+showToast("Ingresa una cantidad válida");
+return;
+}
+
+if(amount>balance){
+showToast("Saldo insuficiente en la simulación");
+return;
+}
+
+balance-=amount;
+
+updateBalance();
+
+addMovement("Retiro de dinero",-amount,"↓");
+
+input.value="";
+
+showToast("Retiro simulado: "+money(amount));
+
+navigate("money");
+
+}
+
+updateBalance();
+
+</script>
+
+</div>
+
+</body>
+</html>
